@@ -27,6 +27,7 @@ class _NeumorphicButtonState extends State<NeumorphicButton> {
   Offset dOffset;
   Alignment alignment1;
   Alignment alignment2;
+  bool isCenter = false;
   final GlobalKey _key = GlobalKey();
 
   void _getSize() {
@@ -66,15 +67,21 @@ class _NeumorphicButtonState extends State<NeumorphicButton> {
       alignment1 = Alignment(alX11, alX12);
       alignment2 = Alignment(alX21, alX22);
 
-      Alignment.bottomCenter;
-      print(alignment1);
-      print(alignment2);
+      double numb = size.width / 5;
+
+      if ((centerX + numb) > touchX && (centerY + numb) > touchY 
+          && (centerX - numb) < touchX && (centerY - numb) < touchY) {
+            isCenter = true;
+        } else {
+          isCenter = false;
+        }
     });
   }
 
   void _onPointerUp(PointerUpEvent event) {
     setState(() {
       _isPressed = false;
+      isCenter = false;
     });
 
     widget.onPressed();
@@ -112,7 +119,7 @@ class _NeumorphicButtonState extends State<NeumorphicButton> {
                 1.0,
               ],
             ),
-          boxShadow: _isPressed ? [
+          boxShadow: _isPressed ? isCenter ? null : [
             BoxShadow(
               blurRadius: widget.bevel / 1.2,
               offset: -widget.blurOffset + dOffset,
@@ -138,9 +145,10 @@ class _NeumorphicButtonState extends State<NeumorphicButton> {
         ),
         padding: const EdgeInsets.all(48),
         child: Center(
-          child: _isPressed ? 
+          child: _isPressed && !isCenter ? 
           GradientText(
             widget.title,
+            textAlign: TextAlign.center,
             style: const TextStyle(fontSize: 40),
             gradient: LinearGradient(
               begin: alignment1,
@@ -159,9 +167,10 @@ class _NeumorphicButtonState extends State<NeumorphicButton> {
             ) :
             Text(
               widget.title,
+              textAlign: TextAlign.center,
               style: const TextStyle(
               fontSize: 40,
-              color: Colors.black87,
+              color: Colors.black54,
               ),
             ),
         ),

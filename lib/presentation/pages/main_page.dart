@@ -27,12 +27,13 @@ class _MainPageState extends State<MainPage> {
                 width: double.infinity,
               ),
               const SizedBox(
-                height: 30,
+                height: 15,
               ),
               Container(
-                width: 200,
+                width: 300,
+                height: 300,
                 child: NeumorphicButton(
-                  title: 'wow',
+                  title: 'wow wow wow wow wow',
                   isLarge: false,
                   onPressed: () {
 
@@ -40,17 +41,17 @@ class _MainPageState extends State<MainPage> {
                 ),
               ),
               const SizedBox(
-                height: 30,
+                height: 15,
               ),
               NeumorphicButton(
-                title: 'wow',
+                title: 'wow wow wow wow wow',
                 isLarge: true,
                 onPressed: () {
 
                 },
               ),
               const SizedBox(
-                height: 30,
+                height: 15,
               ),
             ],
           ),
