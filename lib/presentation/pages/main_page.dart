@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:neumorphic/neumorphic.dart';
 import 'package:neumorphic_design_app/presentation/widgets/neumorphic_button.dart';
 import 'dart:async';
+import 'package:perspective_pageview/perspective_pageview.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key key}) : super(key: key);
@@ -19,7 +20,7 @@ class _MainPageState extends State<MainPage> {
   void nextPage() async {
     await _pageContraller.nextPage(
       duration: Duration(milliseconds: 1500),
-      curve: Curves.bounceOut,
+      curve: Curves.easeInCirc,
     );
   }
 
@@ -65,6 +66,51 @@ class _MainPageState extends State<MainPage> {
               Expanded(
                 child: PageView(
                   children: _getNeumorphicButton(1),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: PerspectivePageView(
+                  hasShadow: true, // Enable-Disable Shadow
+                  shadowColor: Colors.black12, // Change Color
+                  aspectRatio: PVAspectRatio.ONE_ONE, // Add Aspect Ratio
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () {
+                        debugPrint("Statement One");
+                      },
+                      child: Container(
+                        color: Colors.red,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        debugPrint("Statement One");
+                      },
+                      child: Container(
+                        color: Colors.black,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        debugPrint("Statement One");
+                      },
+                      child: Container(
+                        color: Colors.blue,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        debugPrint("Statement Two");
+                      },
+                      child: Container(
+                        color: Colors.green,
+                      ),
+                    )
+                  ],
                 ),
               ),
             ],
@@ -134,6 +180,38 @@ GestureDetector(
           ),
         ),
       ),
+
+
+
+
+
+PerspectivePageView(
+              hasShadow: true, // Enable-Disable Shadow
+              shadowColor: Colors.black12, // Change Color
+              aspectRatio: PVAspectRatio.ONE_ONE, // Add Aspect Ratio
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    debugPrint("Statement One");
+                  },
+                  child: Container(
+                    color: Colors.red,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    debugPrint("Statement Two");
+                  },
+                  child: Container(
+                    color: Colors.green,
+                  ),
+                )
+              ],
+              
+            ),
+
+
+
 
 physics: NeverScrollableScrollPhysics(),
 
