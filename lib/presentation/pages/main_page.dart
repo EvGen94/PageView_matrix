@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:neumorphic/neumorphic.dart';
 import 'package:neumorphic_design_app/presentation/widgets/neumorphic_button.dart';
 import 'dart:async';
-import 'package:perspective_pageview/perspective_pageview.dart';
+import 'dart:math';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key key}) : super(key: key);
@@ -17,16 +17,31 @@ class _MainPageState extends State<MainPage> {
   List<Widget> listWidget = List<Widget>();
   List<List<Widget>> listOfLists = List<List<Widget>>();
 
+  var pageController2 = PageController();
+  double pageOffset = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    pageController2 = PageController(viewportFraction: 0.8);
+    pageController2.addListener(() {
+      setState(() =>
+          pageOffset = pageController2.page); //<-- add listener and set state
+    });
+  }
+
+  double offset;
+
   void nextPage() async {
     await _pageContraller.nextPage(
-      duration: Duration(milliseconds: 1500),
-      curve: Curves.easeInCirc,
+      duration: Duration(milliseconds: 750),
+      curve: Curves.easeInQuart,
     );
   }
 
   void prevPage() async {
     await _pageContraller.previousPage(
-      duration: Duration(milliseconds: 1000),
+      duration: Duration(milliseconds: 750),
       curve: Curves.easeInQuart,
     );
   }
@@ -55,9 +70,10 @@ class _MainPageState extends State<MainPage> {
             children: <Widget>[
               Expanded(
                 child: PageView(
-                    children: _getNeumorphicButton(0),
-                    physics: NeverScrollableScrollPhysics(),
-                    controller: _pageContraller),
+                  children: _getNeumorphicButton(0),
+                  physics: NeverScrollableScrollPhysics(),
+                  controller: _pageContraller,
+                ),
               ),
             ],
           ),
@@ -66,6 +82,8 @@ class _MainPageState extends State<MainPage> {
               Expanded(
                 child: PageView(
                   children: _getNeumorphicButton(1),
+                  physics: NeverScrollableScrollPhysics(),
+                  controller: _pageContraller,
                 ),
               ),
             ],
@@ -73,45 +91,69 @@ class _MainPageState extends State<MainPage> {
           Row(
             children: <Widget>[
               Expanded(
-                child: PerspectivePageView(
-                  hasShadow: true, // Enable-Disable Shadow
-                  shadowColor: Colors.black12, // Change Color
-                  aspectRatio: PVAspectRatio.ONE_ONE, // Add Aspect Ratio
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                        debugPrint("Statement One");
-                      },
-                      child: Container(
-                        color: Colors.red,
+                child: PageView(children: <Widget>[
+                  FittedBox(
+                    child: Container(
+                      height: 300,
+                      width: 300,
+                      child: Card(
+                        color: Colors.blue[100],
+                        elevation: 8,
+                        child: FittedBox(
+                          child: Image.network(
+                            //<-- main image
+                            'https://avatars.mds.yandex.net/get-zen_doc/1654267/pub_5d5aadb44e057700ae848e4b_5d5ab809c31e4900ae89fefe/scale_1200',
+                            width: 500,
+                            height: MediaQuery.of(context).size.height * 0.9,
+                            // alignment: Alignment(offset.abs(), 0),
+                            fit: BoxFit.contain,
+                          ),
+                        ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        debugPrint("Statement One");
-                      },
-                      child: Container(
-                        color: Colors.black,
+                  ),
+                  FittedBox(
+                    child: Container(
+                      height: 300,
+                      width: 300,
+                      child: Card(
+                        color: Colors.blue[100],
+                        elevation: 10,
+                        child: FittedBox(
+                          child: Positioned(
+                            child: Image.network(
+                              'https://klv-oboi.ru/img/gallery/19/thumbs/thumb_l_0750.jpg',
+                              width: 500,
+                              height: MediaQuery.of(context).size.height * 0.9,
+                              // alignment: Alignment(offset.abs(), 0),
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        debugPrint("Statement One");
-                      },
-                      child: Container(
-                        color: Colors.blue,
+                  ),
+                  FittedBox(
+                    child: Container(
+                      height: 300,
+                      width: 300,
+                      child: Card(
+                        color: Colors.blue[100],
+                        elevation: 10,
+                        child: FittedBox(
+                          child: Image.network(
+                            //<-- main image
+                            'https://avatars.mds.yandex.net/get-pdb/881477/049bbdf6-ae6f-4179-9a80-a5a591af8be8/s1200?webp=false',
+                            width: 500,
+                            height: MediaQuery.of(context).size.height * 0.9,
+                            //    alignment: Alignment(offset.abs(), 0),
+                            fit: BoxFit.contain,
+                          ),
+                        ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        debugPrint("Statement Two");
-                      },
-                      child: Container(
-                        color: Colors.green,
-                      ),
-                    )
-                  ],
-                ),
+                  ),
+                ]),
               ),
             ],
           ),
@@ -156,6 +198,7 @@ class _MainPageState extends State<MainPage> {
     );
   }
 }
+
 /*
 
 
