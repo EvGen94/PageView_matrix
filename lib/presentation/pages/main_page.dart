@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:neumorphic/neumorphic.dart';
 import 'package:neumorphic_design_app/presentation/widgets/neumorphic_button.dart';
-import 'dart:async';
-import 'dart:math';
+
+
 
 class MainPage extends StatefulWidget {
   const MainPage({Key key}) : super(key: key);
@@ -12,25 +12,14 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  //var _pageContraller = PageController(viewportFraction: 0.8);
-  var _pageContraller = PageController();
+ 
+
   List<Widget> listWidget = List<Widget>();
   List<List<Widget>> listOfLists = List<List<Widget>>();
 
-  var pageController2 = PageController();
-  double pageOffset = 0;
+  var _pageContraller = PageController();
 
-  @override
-  void initState() {
-    super.initState();
-    pageController2 = PageController(viewportFraction: 0.8);
-    pageController2.addListener(() {
-      setState(() =>
-          pageOffset = pageController2.page); //<-- add listener and set state
-    });
-  }
-
-  double offset;
+  final _controller = PageController();
 
   void nextPage() async {
     await _pageContraller.nextPage(
@@ -55,6 +44,19 @@ class _MainPageState extends State<MainPage> {
 
     return listOfLists[index];
     // return listWidget;
+  }
+
+  PageController pageController;
+  double pageOffset = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    pageController = PageController(viewportFraction: 0.8);
+    pageController.addListener(() {
+      setState(() =>
+          pageOffset = pageController.page); //<-- add listener and set state
+    });
   }
 
   @override
@@ -91,69 +93,80 @@ class _MainPageState extends State<MainPage> {
           Row(
             children: <Widget>[
               Expanded(
-                child: PageView(children: <Widget>[
-                  FittedBox(
-                    child: Container(
-                      height: 300,
-                      width: 300,
-                      child: Card(
-                        color: Colors.blue[100],
-                        elevation: 8,
-                        child: FittedBox(
-                          child: Image.network(
-                            //<-- main image
-                            'https://avatars.mds.yandex.net/get-zen_doc/1654267/pub_5d5aadb44e057700ae848e4b_5d5ab809c31e4900ae89fefe/scale_1200',
-                            width: 500,
-                            height: MediaQuery.of(context).size.height * 0.9,
-                            // alignment: Alignment(offset.abs(), 0),
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  FittedBox(
-                    child: Container(
-                      height: 300,
-                      width: 300,
-                      child: Card(
-                        color: Colors.blue[100],
-                        elevation: 10,
-                        child: FittedBox(
-                          child: Positioned(
-                            child: Image.network(
-                              'https://klv-oboi.ru/img/gallery/19/thumbs/thumb_l_0750.jpg',
-                              width: 500,
-                              height: MediaQuery.of(context).size.height * 0.9,
-                              // alignment: Alignment(offset.abs(), 0),
-                              fit: BoxFit.contain,
+                child: PageView(
+                  controller: pageController,
+                  children: <Widget>[
+                    FittedBox(
+                      child: Container(
+                        height: 400,
+                        width: 350,
+                        child: Card(
+                          color: Colors.blue[100],
+                          elevation: 8,
+                          child: FittedBox(
+                            child: Padding(
+                              padding: EdgeInsets.all(80),
+                              child: Image.network(
+                                'https://avatars.mds.yandex.net/get-pdb/881477/049bbdf6-ae6f-4179-9a80-a5a591af8be8/s1200?webp=false',
+                                width: 500,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.9,
+                                fit: BoxFit.none,
+                                alignment: Alignment(-pageOffset.abs() , 0),
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  FittedBox(
-                    child: Container(
-                      height: 300,
-                      width: 300,
-                      child: Card(
-                        color: Colors.blue[100],
-                        elevation: 10,
-                        child: FittedBox(
-                          child: Image.network(
-                            //<-- main image
-                            'https://avatars.mds.yandex.net/get-pdb/881477/049bbdf6-ae6f-4179-9a80-a5a591af8be8/s1200?webp=false',
-                            width: 500,
-                            height: MediaQuery.of(context).size.height * 0.9,
-                            //    alignment: Alignment(offset.abs(), 0),
-                            fit: BoxFit.contain,
+                    FittedBox(
+                      child: Container(
+                        height: 400,
+                        width: 350,
+                        child: Card(
+                          color: Colors.blue[100],
+                          elevation: 10,
+                          child: Padding(
+                            padding: EdgeInsets.all(40),
+                            child: FittedBox(
+                              child: Image.network(
+                                'https://s1.1zoom.me/b5050/55/Stars_Sky_454921_1920x1200.jpg',
+                                width: 500,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.9,
+                                fit: BoxFit.none,
+                                alignment: Alignment(-pageOffset.abs() +1 , 0),
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ]),
+                    FittedBox(
+                      child: Container(
+                        height: 400,
+                        width: 350,
+                        child: Card(
+                          color: Colors.blue[100],
+                          elevation: 10,
+                          child: Padding(
+                            padding: EdgeInsets.all(40),
+                            child: FittedBox(
+                              child: Image.network(
+                                'https://s2.best-wallpaper.net/wallpaper/1600x1200/1312/Yellow-flowers-raindrops-glare_1600x1200.jpg',
+                                width: 500,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.9,
+                                fit: BoxFit.none,
+                                alignment: Alignment(-pageOffset.abs() + 1, 0),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

@@ -18,6 +18,7 @@ dependencies:
   gradient_text:
   perspective_pageview: ^0.1.1
 
+
 dev_dependencies:
   lint:
   flutter_test:
