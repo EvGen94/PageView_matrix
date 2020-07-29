@@ -14,19 +14,23 @@ class _MainPageState extends State<MainPage> {
 
   var _pageContraller = PageController();
 
-  final _controller = PageController(viewportFraction: 0.8);
+  final _controller = PageController(viewportFraction: 1);
+
+
+  
+  final _controllerRow = PageController(viewportFraction: 1);
 
   void nextPage() async {
     await _pageContraller.nextPage(
-      duration: Duration(milliseconds: 750),
-      curve: Curves.slowMiddle,
+      duration: Duration(milliseconds: 1750),
+      curve: Curves.easeInOutQuad,
     );
   }
 
   void prevPage() async {
     await _pageContraller.previousPage(
-      duration: Duration(milliseconds: 750),
-      curve: Curves.slowMiddle,
+      duration: Duration(milliseconds: 1750),
+      curve: Curves.easeInOutQuad,
     );
   }
 
@@ -52,8 +56,8 @@ class _MainPageState extends State<MainPage> {
               Expanded(
                 child: PageView(
                   children: _getNeumorphicButton(0),
-                  physics: NeverScrollableScrollPhysics(),
-                  controller: _pageContraller,
+                  //  physics: NeverScrollableScrollPhysics(),
+                  controller: _controllerRow,
                 ),
               ),
             ],
@@ -63,8 +67,8 @@ class _MainPageState extends State<MainPage> {
               Expanded(
                 child: PageView(
                   children: _getNeumorphicButton(1),
-                  //  physics: NeverScrollableScrollPhysics(),
-                  controller: _pageContraller,
+                  //   physics: NeverScrollableScrollPhysics(),
+                  controller: _controllerRow,
                 ),
               ),
             ],
@@ -73,90 +77,108 @@ class _MainPageState extends State<MainPage> {
             children: <Widget>[
               Expanded(
                 child: PageView(
-                  children: _getNeumorphicButton(1),
+                  children: _getNeumorphicButton(2),
                   //  physics: NeverScrollableScrollPhysics(),
-                  controller: _pageContraller,
+                  controller: _controllerRow,
                 ),
               ),
             ],
           ),
         ],
         scrollDirection: Axis.vertical,
-          controller: _controller,
+        controller: _controller,
       ),
     );
   }
 
   Widget _buildNeumorphicButton(int amount) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.only(
+          left: 0.25 *
+              MediaQuery.of(context).size.width *
+              (((MediaQuery.of(context).size.height /
+                          MediaQuery.of(context).size.width) *
+                      0.3) +
+                  0.2),
+          top: 0.25 *
+              MediaQuery.of(context).size.width *
+              (((MediaQuery.of(context).size.height /
+                          MediaQuery.of(context).size.width) *
+                      0.3) +
+                  0.2)),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          SizedBox(
-            width: double.infinity,
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          GestureDetector(
-            onPanUpdate: (details) {
-              if (details.delta.dx < 0) {
-                nextPage();
-              }
-              if (details.delta.dx > 0) {
-                prevPage();
-              }
-            },
-            child: Container(
-              height: MediaQuery.of(context).size.width * 1.25,
-              width: MediaQuery.of(context).size.width * 0.85,
-              child: Card(
-                semanticContainer: true,
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(35.0)),
-                ),
-                color: Colors.grey[50],
-                elevation: 10,
-                child: Column(
-                  children: <Widget>[
-                    Stack(
-                      children: <Widget>[
-                        Image.asset('assets/third.jpg', fit: BoxFit.fill),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 45.0, right: 15.0, top: 15.0),
-                          child: Center(
-                            child: AutoSizeText(
-                                'Lorem ipsum dolor sit amet, elit consectetur adipiscing elit',
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.grey[50],
-                                    fontFamily: 'Roboto2'),
-                                minFontSize: 10,
-                                maxLines: 6,
-                                overflow: TextOverflow.ellipsis),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.all(18.0),
-                        child: AutoSizeText(
-                          'Lorem ipsum dolor sit amet, consectetur adip amet, consectetur adipiscing elit. Fusce semper augue ac massa egestas, non luctus purus cursus',
-                          style: TextStyle(fontSize: 30),
-                          minFontSize: 18,
-                          maxLines: 4,
-                          overflow: TextOverflow.ellipsis,
+          // SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+          /* GestureDetector(
+              onPanUpdate: (details) {
+                if (details.delta.dx < 0) {
+                  nextPage();
+                }
+                if (details.delta.dx > 0) {
+                  prevPage();
+                }
+              },*/
+          //  child:
+          Container(
+            height: 1.5 *
+                MediaQuery.of(context).size.width *
+                (((MediaQuery.of(context).size.height /
+                            MediaQuery.of(context).size.width) *
+                        0.3) +
+                    0.2),
+            width: MediaQuery.of(context).size.width *
+                (((MediaQuery.of(context).size.height /
+                            MediaQuery.of(context).size.width) *
+                        0.3) +
+                    0.2),
+            child: Card(
+              semanticContainer: true,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(45.0)),
+              ),
+              color: Colors.grey[50],
+              elevation: 10,
+              child: Column(
+                children: <Widget>[
+                  Stack(
+                    children: <Widget>[
+                      Image.asset('assets/third.jpg', fit: BoxFit.fill),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 45.0, right: 15.0, top: 15.0),
+                        child: Center(
+                          child: AutoSizeText(
+                              'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.grey[50],
+                                  fontFamily: 'Roboto2'),
+                              minFontSize: 10,
+                              maxLines: 6,
+                              overflow: TextOverflow.ellipsis),
                         ),
                       ),
+                    ],
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.all(18.0),
+                      child: AutoSizeText(
+                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce semper augue ac massa egestas, non luctus purus cursus',
+                        style: TextStyle(fontSize: 22),
+                        minFontSize: 20,
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
+          //  ),
         ],
       ),
     );
