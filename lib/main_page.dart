@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'dart:math';
 
-const SCALE_FRACTION = 0.7;
-const FULL_SCALE = 0.5;
-
-
 class MainPage extends StatefulWidget {
   const MainPage({Key key}) : super(key: key);
 
@@ -14,35 +10,33 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  List<Widget> listWidget = List<Widget>();
-  List<List<Widget>> listOfLists = List<List<Widget>>();
-
   var _controllerRow = PageController();
-
   var _controllerColumn = PageController();
 
+  List<Widget> listWidget = List<Widget>();
+  List<List<Widget>> listOfLists = List<List<Widget>>();
   List<Widget> _getNeumorphicButton(int index) {
     for (int i = 0; i < 8; i++) {
       listWidget.add(_buildNeumorphicButton(1));
     }
     listOfLists.add(listWidget);
     listWidget = List<Widget>();
-
     return listOfLists[index];
   }
- double page = 1;
-    double viewPortFraction1 = 0.95;
 
-    PageController pageController_zoom;
+  double page = 1;
+  int currentPage = 1;
+  PageController pageController_zoom0;
+  PageController pageController_zoom1;
+  PageController pageController_zoom2;
 
-    int currentPage = 1;
-
-    @override
-    void initState() {
-      pageController_zoom = PageController(
-          initialPage: currentPage, viewportFraction: viewPortFraction1);
-      super.initState();
-    }
+  @override
+  void initState() {
+    pageController_zoom0 = PageController(initialPage: currentPage);
+    pageController_zoom1 = PageController(initialPage: currentPage);
+    pageController_zoom2 = PageController(initialPage: currentPage);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,17 +46,12 @@ class _MainPageState extends State<MainPage> {
                   MediaQuery.of(context).size.width) +
           0.254,
     );
-    // viewportFraction: 1);
-
     _controllerColumn = PageController(
       viewportFraction: -0.128 *
               (MediaQuery.of(context).size.height /
                   MediaQuery.of(context).size.width) +
           1.1,
     );
-    //viewportFraction: 0.865);
-
-   
     return Scaffold(
       backgroundColor: Colors.blueGrey.shade200,
       body: PageView(
@@ -74,7 +63,7 @@ class _MainPageState extends State<MainPage> {
                   onNotification: (ScrollNotification notification) {
                     if (notification is ScrollUpdateNotification) {
                       setState(() {
-                        page = pageController_zoom.page;
+                        page = pageController_zoom0.page;
                       });
                     }
                   },
@@ -84,15 +73,11 @@ class _MainPageState extends State<MainPage> {
                         currentPage = pos;
                       });
                     },
-                    controller: pageController_zoom,
+                    controller: pageController_zoom0,
                     itemCount: _getNeumorphicButton(0).length,
                     itemBuilder: (context, index) {
-                      final scale = max(
-                          0.4,
-                          (0.3 - (index - page).abs()) +
-                              viewPortFraction1 -0.3);
+                      final scale = max(0.4, (1 - (index - page).abs()));
                       return _buildNeumorphicButton(scale);
-                      
                     },
                   ),
                 ),
@@ -102,10 +87,27 @@ class _MainPageState extends State<MainPage> {
           Row(
             children: <Widget>[
               Expanded(
-                child: PageView(
-                  children: _getNeumorphicButton(1),
-                  //   physics: NeverScrollableScrollPhysics(),
-                  controller: _controllerRow,
+                child: NotificationListener<ScrollNotification>(
+                  onNotification: (ScrollNotification notification) {
+                    if (notification is ScrollUpdateNotification) {
+                      setState(() {
+                        page = pageController_zoom1.page;
+                      });
+                    }
+                  },
+                  child: PageView.builder(
+                    onPageChanged: (pos) {
+                      setState(() {
+                        currentPage = pos;
+                      });
+                    },
+                    controller: pageController_zoom1,
+                    itemCount: _getNeumorphicButton(1).length,
+                    itemBuilder: (context, index) {
+                      final scale = max(0.4, (1 - (index - page).abs()));
+                      return _buildNeumorphicButton(scale);
+                    },
+                  ),
                 ),
               ),
             ],
