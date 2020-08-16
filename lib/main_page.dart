@@ -26,6 +26,10 @@ class _MainPageState extends State<MainPage> {
 
   double page = 1;
   int currentPage = 1;
+  double page1 = 1;
+  int currentPage1 = 1;
+  double page2 = 1;
+  int currentPage2 = 1;
   PageController pageController_zoom0;
   PageController pageController_zoom1;
   PageController pageController_zoom2;
@@ -40,6 +44,18 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    final pageController_zoom0 = PageController(
+      viewportFraction: 1,//  viewportFraction бессмысленно менять так как Transform забирает все пространство одинаково в pageview /s/s/s 0.353 * (MediaQuery.of(context).size.height /MediaQuery.of(context).size.width) + 0.254,
+      initialPage: 1, 
+    );
+    final pageController_zoom1 = PageController(
+      viewportFraction: 1,
+      initialPage: 1,
+    );
+    final pageController_zoom2 = PageController(
+      viewportFraction: 1,
+      initialPage: 1,
+    );
     _controllerRow = PageController(
       viewportFraction: 0.353 *
               (MediaQuery.of(context).size.height /
@@ -52,6 +68,7 @@ class _MainPageState extends State<MainPage> {
                   MediaQuery.of(context).size.width) +
           1.1,
     );
+
     return Scaffold(
       backgroundColor: Colors.blueGrey.shade200,
       body: PageView(
@@ -76,7 +93,7 @@ class _MainPageState extends State<MainPage> {
                     controller: pageController_zoom0,
                     itemCount: _getNeumorphicButton(0).length,
                     itemBuilder: (context, index) {
-                      final scale = max(0.4, (1 - (index - page).abs()));
+                      final scale = max(0.35, (1 - (index - page).abs()));
                       return _buildNeumorphicButton(scale);
                     },
                   ),
@@ -91,21 +108,21 @@ class _MainPageState extends State<MainPage> {
                   onNotification: (ScrollNotification notification) {
                     if (notification is ScrollUpdateNotification) {
                       setState(() {
-                        page = pageController_zoom1.page;
+                        page1 = pageController_zoom1.page;
                       });
                     }
                   },
                   child: PageView.builder(
-                    onPageChanged: (pos) {
+                    onPageChanged: (pos1) {
                       setState(() {
-                        currentPage = pos;
+                        currentPage1 = pos1;
                       });
                     },
                     controller: pageController_zoom1,
                     itemCount: _getNeumorphicButton(1).length,
                     itemBuilder: (context, index) {
-                      final scale = max(0.4, (1 - (index - page).abs()));
-                      return _buildNeumorphicButton(scale);
+                      final scale1 = max(0.4, (1 - (index - page1).abs()));
+                      return _buildNeumorphicButton(scale1);
                     },
                   ),
                 ),
@@ -115,10 +132,27 @@ class _MainPageState extends State<MainPage> {
           Row(
             children: <Widget>[
               Expanded(
-                child: PageView(
-                  children: _getNeumorphicButton(2),
-                  //  physics: NeverScrollableScrollPhysics(),
-                  controller: _controllerRow,
+                child: NotificationListener<ScrollNotification>(
+                  onNotification: (ScrollNotification notification) {
+                    if (notification is ScrollUpdateNotification) {
+                      setState(() {
+                        page2 = pageController_zoom2.page;
+                      });
+                    }
+                  },
+                  child: PageView.builder(
+                    onPageChanged: (pos2) {
+                      setState(() {
+                        currentPage2 = pos2;
+                      });
+                    },
+                    controller: pageController_zoom2,
+                    itemCount: _getNeumorphicButton(1).length,
+                    itemBuilder: (context, index) {
+                      final scale2 = max(0.4, (1 - (index - page2).abs()));
+                      return _buildNeumorphicButton(scale2);
+                    },
+                  ),
                 ),
               ),
             ],
@@ -147,12 +181,12 @@ class _MainPageState extends State<MainPage> {
                           MediaQuery.of(context).size.width <
                       1.5)
                   ? MediaQuery.of(context).size.height * 0.94
-                  : (MediaQuery.of(context).size.width * 0.94) * 1.7,
+                  : (MediaQuery.of(context).size.width * 0.94) * 1.72,
               width: (MediaQuery.of(context).size.height /
                           MediaQuery.of(context).size.width >
                       1.5)
                   ? MediaQuery.of(context).size.width * 0.94
-                  : (MediaQuery.of(context).size.height * 0.94) / 1.7,
+                  : (MediaQuery.of(context).size.height * 0.94) / 1.72,
               child: Card(
                 semanticContainer: true,
                 clipBehavior: Clip.antiAliasWithSaveLayer,
